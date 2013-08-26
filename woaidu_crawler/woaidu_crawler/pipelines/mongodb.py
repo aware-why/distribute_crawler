@@ -61,9 +61,7 @@ class SingleMongodbPipeline(object):
       
 	from scrapy import log
 	log.msg("FUCK*** mogondb process_item: %r" % book_detail, level=log.DEBUG, spider=spider) 
-	from pyxlib.utils import make_utf8_obj
-	# make_utf8_obj(book_detail) 
-	
+		
 	try:
 	    bk_n = book_detail.pop('book_name')
             author = book_detail.pop('author')

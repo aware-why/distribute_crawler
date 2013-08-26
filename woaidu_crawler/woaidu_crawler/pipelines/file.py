@@ -19,7 +19,7 @@ from scrapy.contrib.pipeline.images import MediaPipeline
 from woaidu_crawler.utils.select_result import list_first_item
 from scrapy.exceptions import NotConfigured, IgnoreRequest
 
-from pyxlib.utils import make_unicode, make_unicode_obj
+from woaidu_crawler.utils.coding import make_unicode, make_unicode_obj
 
 class FileException(Exception):
     """General file error exception"""
