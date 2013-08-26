@@ -34,11 +34,11 @@ AUTOTHROTTLE_CONCURRENCY_CHECK_PERIOD = 10#How many responses should pass to per
 #if you want to use shard mongodb,you need MongodbWoaiduBookFile and ShardMongodbPipeline
 #if you want to use single mongodb,you need WoaiduBookFile and SingleMongodbPipeline
 ITEM_PIPELINES = ['woaidu_crawler.pipelines.cover_image.WoaiduCoverImage',
-#    'woaidu_crawler.pipelines.bookfile.WoaiduBookFile',
-    'woaidu_crawler.pipelines.mongodb_book_file.MongodbWoaiduBookFile',
+    'woaidu_crawler.pipelines.bookfile.WoaiduBookFile',
+#    'woaidu_crawler.pipelines.mongodb_book_file.MongodbWoaiduBookFile',
     'woaidu_crawler.pipelines.drop_none_download.DropNoneBookFile',
-#    'woaidu_crawler.pipelines.mongodb.SingleMongodbPipeline',
-    'woaidu_crawler.pipelines.mongodb.ShardMongodbPipeline',
+    'woaidu_crawler.pipelines.mongodb.SingleMongodbPipeline',
+#    'woaidu_crawler.pipelines.mongodb.ShardMongodbPipeline',
     'woaidu_crawler.pipelines.final_test.FinalTestPipeline',]
 #ITEM_PIPELINES = ['woaidu_crawler.pipelines.WoaiduBookFile',]
 
@@ -121,7 +121,7 @@ LOG_FILE = "logs/scrapy.log"
 STATS_CLASS = 'woaidu_crawler.statscol.graphite.RedisGraphiteStatsCollector'
 
 GRAPHITE_HOST = '127.0.0.1'
-GRAPHITE_PORT = 2003
+GRAPHITE_PORT = 2003   ## carbon-cache listen on this
 GRAPHITE_IGNOREKEYS = []
 
 SingleMONGODB_SERVER = "localhost"

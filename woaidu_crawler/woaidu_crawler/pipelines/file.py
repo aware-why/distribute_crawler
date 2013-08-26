@@ -19,6 +19,8 @@ from scrapy.contrib.pipeline.images import MediaPipeline
 from woaidu_crawler.utils.select_result import list_first_item
 from scrapy.exceptions import NotConfigured, IgnoreRequest
 
+from pyxlib.utils import make_unicode, make_unicode_obj
+
 class FileException(Exception):
     """General file error exception"""
     def __init__(self, file_url=None, *args):
@@ -264,9 +266,9 @@ class FilePipeline(MediaPipeline):
             #MPLS TE Switching%E6%96%B9%E6%A1%88%E7%99%BD%E7%9A%AE%E4%B9%A6.pdf
             #use urllib.unquote(filename) instead
             if urlparse(request.url).netloc in self.ATTACHMENT_FILENAME_UTF8_DOMAIN:
-                filename = filename.decode("utf-8")
+                filename = make_unicode(filename)
             else:
-                filename = filename.decode("gbk")
+                filename = make_unicode(filename)
             #print "Content-Disposition:","*"*30,filename
         else:
             guessname = request.url.split('/')[-1]
@@ -274,7 +276,7 @@ class FilePipeline(MediaPipeline):
             #Split the pathname path into a pair (root, ext) such that root + ext == path
             if os.path.splitext(guessname)[1].lower() in self.FILE_EXTENTION:
                 if urlparse(request.url).netloc in self.URL_GBK_DOMAIN:
-                    filename = urllib.unquote(guessname).decode("gbk").encode("utf-8")
+                    filename = make_unicode(urllib.unquote(guessname)).encode("utf-8")
                 else:
                     filename = urllib.unquote(guessname)
                 #print "url:","*"*30,filename

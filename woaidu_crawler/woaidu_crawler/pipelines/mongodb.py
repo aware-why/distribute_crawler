@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #-*-coding:utf-8-*-
 
+import sys
 import datetime
 import traceback
 from pprint import pprint
@@ -8,6 +9,7 @@ from woaidu_crawler.utils import color
 from scrapy import log
 from woaidu_crawler.utils import color
 from pymongo.connection import MongoClient
+import pymongo
 
 class SingleMongodbPipeline(object):
     """
@@ -56,9 +58,31 @@ class SingleMongodbPipeline(object):
             'original_url':item.get('original_url',''),
             'update_time':datetime.datetime.utcnow(),
         }
-        
-        result = self.db['book_detail'].insert(book_detail)
-        item["mongodb_id"] = str(result)
+      
+	from scrapy import log
+	log.msg("FUCK*** mogondb process_item: %r" % book_detail, level=log.DEBUG, spider=spider) 
+	from pyxlib.utils import make_utf8_obj
+	# make_utf8_obj(book_detail) 
+	
+	try:
+	    bk_n = book_detail.pop('book_name')
+            author = book_detail.pop('author')
+            self.db['book_detail'].update({'book_name' : bk_n, 'author' : author},
+                                          {'$set' : book_detail},
+                                          upsert=True)
+	    result = self.db['book_detail'].find_one({'book_name' : bk_n, 'author' : author})['_id']
+            # result = self.db['book_detail'].insert(book_detail)
+            item["mongodb_id"] = str(result)
+	# except pymongo.errors.DuplicateKeyError, e:
+	   # bk_n = book_detail.pop('book_name')
+	   # author = book_detail.pop('author')
+	   # self.db['book_detail'].update({'book_name' : bk_n, 'author' : author},
+					#  {'$set' : book_detail},
+					#  upsert=True)
+	except Exception, e:
+  	    traceback.print_exc()
+	    sys.stderr.write('FUCK*** [pipeline] mongodb error: %s || %s || %s' % (type(e).__module__, type(e).__name__, e.args))
+	    raise	
 
         log.msg("Item %s wrote to MongoDB database %s/book_detail" %
                     (result, self.MONGODB_DB),

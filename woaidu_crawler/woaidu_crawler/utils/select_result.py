@@ -5,6 +5,8 @@ import types
 from w3lib.html import remove_entities
 from urlparse import urlparse, urljoin
 
+from pyxlib.utils import make_utf8, make_unicode
+
 NULL = [None,'null']
 
 list_first_item = lambda x:x[0] if x else None

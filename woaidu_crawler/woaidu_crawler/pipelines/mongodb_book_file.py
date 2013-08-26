@@ -96,7 +96,7 @@ class MongodbWoaiduBookFile(FilePipeline):
     def __init__(self,shard_server,shard_port,shard_db,shard_gridfs_collection,download_func=None):
         self.style = color.color_style()
         ##########from MediaPipeline###########
-        self.spiderinfo = {}
+        # self.spiderinfo = {}
         self.download_func = download_func
         ##########from MediaPipeline###########
 
@@ -126,8 +126,8 @@ class MongodbWoaiduBookFile(FilePipeline):
         """
             custom process_item func,so it will manage the Request result.
         """
-        
-        info = self.spiderinfo[spider]
+        log.msg("FUCK*** come here meida_naem=%s" % self.MEDIA_NAME, level=log.DEBUG, spider=spider) 
+        info = self.spiderinfo.spider
         requests = arg_to_iter(self.get_media_requests(item, info))
         dlist = [self._process_request(r, info) for r in requests]
         dfd = DeferredList(dlist, consumeErrors=1)
