@@ -5,7 +5,6 @@ import types
 from w3lib.html import remove_entities
 from urlparse import urlparse, urljoin
 
-
 NULL = [None,'null']
 
 list_first_item = lambda x:x[0] if x else None

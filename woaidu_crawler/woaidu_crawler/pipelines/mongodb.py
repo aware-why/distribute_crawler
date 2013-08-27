@@ -59,8 +59,7 @@ class SingleMongodbPipeline(object):
             'update_time':datetime.datetime.utcnow(),
         }
       
-	from scrapy import log
-	log.msg("FUCK*** mogondb process_item: %r" % book_detail, level=log.DEBUG, spider=spider) 
+	log.msg("*** [pipeline] mogondb process_item: %r" % book_detail, level=log.DEBUG, spider=spider) 
 		
 	try:
 	    bk_n = book_detail.pop('book_name')
@@ -69,17 +68,10 @@ class SingleMongodbPipeline(object):
                                           {'$set' : book_detail},
                                           upsert=True)
 	    result = self.db['book_detail'].find_one({'book_name' : bk_n, 'author' : author})['_id']
-            # result = self.db['book_detail'].insert(book_detail)
             item["mongodb_id"] = str(result)
-	# except pymongo.errors.DuplicateKeyError, e:
-	   # bk_n = book_detail.pop('book_name')
-	   # author = book_detail.pop('author')
-	   # self.db['book_detail'].update({'book_name' : bk_n, 'author' : author},
-					#  {'$set' : book_detail},
-					#  upsert=True)
 	except Exception, e:
   	    traceback.print_exc()
-	    sys.stderr.write('FUCK*** [pipeline] mongodb error: %s || %s || %s' % (type(e).__module__, type(e).__name__, e.args))
+	    sys.stderr.write('*** [pipeline] mongodb error: %s || %s || %s' % (type(e).__module__, type(e).__name__, e.args))
 	    raise	
 
         log.msg("Item %s wrote to MongoDB database %s/book_detail" %

@@ -72,7 +72,7 @@ class WoaiduBookFile(FilePipeline):
         """
             custom process_item func,so it will manage the Request result.
         """
-       	log.msg("FUCK*** media_name : %s || spider: %r || self.spiderinfo: %r" % (self.MEDIA_NAME, spider, self.spiderinfo), level=log.DEBUG, spider=spider) 
+       	log.msg("***[pipeline]  media_name : %s || spider: %r || self.spiderinfo: %r" % (self.MEDIA_NAME, spider, self.spiderinfo), level=log.DEBUG, spider=spider) 
         info = self.spiderinfo
         requests = arg_to_iter(self.get_media_requests(item, info))
         dlist = [self._process_request(r, info) for r in requests]
